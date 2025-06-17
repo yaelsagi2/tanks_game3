@@ -1,0 +1,41 @@
+#include "common/SatelliteView.h"
+#include "GameBoard.h"
+#include "Tank.h"
+
+/**
+ * @brief Provides a satellite view of the game board for a specific tank.
+ *        Allows querying the board state and printing a debug view.
+ */
+class GameBoardSatelliteView : public SatelliteView {
+public:
+    /**
+     * @brief Constructs a satellite view for the given board and tank.
+     * @param board Reference to the game board.
+     * @param selfTank Pointer to the player's own tank.
+     */
+    GameBoardSatelliteView(const GameBoard& board, const Tank* selfTank);
+
+    /**
+     * @brief Returns a character representing the object at the specified coordinates.
+     * @param x The x-coordinate.
+     * @param y The y-coordinate.
+     * @return Character representing the object at (x, y).
+     */
+    char getObjectAt(size_t x, size_t y) const override;
+
+    // Rule Of 5: 
+    ~GameBoardSatelliteView() override = default; // Destructor
+    GameBoardSatelliteView(const GameBoardSatelliteView&) = delete; // Copy constructor
+    GameBoardSatelliteView& operator=(const GameBoardSatelliteView&) = delete; // Copy assignment operator
+    GameBoardSatelliteView(GameBoardSatelliteView&&) = delete; // Move constructor
+    GameBoardSatelliteView& operator=(GameBoardSatelliteView&&) = delete; // Move assignment operator
+
+    /**
+     * @brief Prints a debug view of the board to stdout.
+     */
+    void printView() const; // For debugging purposes
+
+private:
+    const GameBoard& board;   ///< Reference to the game board
+    const Tank* selfTank;     ///< Pointer to the player's own tank
+};
