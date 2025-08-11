@@ -1,8 +1,0 @@
-I kindly ask that you consider awarding a small bonus for the implementation of the detailed logger (`detailed_output_<input_file>.txt`), which provides a step-by-step trace of every game event — including actions, movements, collisions, and outcomes — to support debugging and transparency.
-
-Additionally, I would like to mention that I had to complete this entire project on my own after my partner unexpectedly dropped out. This meant taking full responsibility for all components of the assignment — a workload originally designed for two people. I did my best to meet all the requirements and maintain clean, well-documented code throughout.
-
-I regret that I wasn’t able to implement additional bonus features due to time constraints and the circumstances mentioned above. I truly hope this effort will be taken into account during grading.
-
-Thank you very much for your understanding.
-ID: 206480972

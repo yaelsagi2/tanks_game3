@@ -1,7 +1,0 @@
-Test map - valid map
-MaxSteps = 100
-NumShells = 5
-Rows = 2
-Cols = 5
-1 @ #
-2   #
