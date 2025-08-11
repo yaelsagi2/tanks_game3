@@ -7,22 +7,71 @@
 #include "Point.h"
 #include "GameObject.h"
 #include "Direction.h"
+#include "common/SatelliteView.h"
 #include <algorithm>
 #include <queue>
 #include <cmath>
 #include <vector>
+#include <unordered_map>
+#include <memory>
 
-// Constructor
-GameBoard::GameBoard(int rows, int cols, int maxSteps,
-                     std::vector<std::unique_ptr<GameObject>>&& all_objects,
-                     std::unordered_map<Point, GameObject*>&& map,
-                     std::vector<Tank*>& p1,
-                     std::vector<Tank*>& p2)
-    : rows(rows), cols(cols), maxSteps(maxSteps),
-      objects(std::move(all_objects)),
-      object_at(std::move(map)),
-      player1_tanks(p1),
-      player2_tanks(p2) {}
+
+// Constructor from satelliteView
+GameBoard::GameBoard(size_t map_width, size_t map_height, const SatelliteView& map, size_t max_steps, size_t num_shells): rows(static_cast<int>(map_height)), cols(static_cast<int>(map_width)), max_steps(static_cast<int>(max_steps)) {
+    objects.clear(); // Initialize empty containers
+    object_at.clear();
+    player1_tanks.clear();
+    player2_tanks.clear();
+    int player1_tank_id = 0,  player2_tank_id = 0;     // Track tank IDs for each player
+    for (size_t y = 0; y < map_height; ++y) { // Parse the satellite view and create game objects
+        for (size_t x = 0; x < map_width; ++x) {
+            char cell = map.getObjectAt(x, y);
+            Point pos(static_cast<int>(x), static_cast<int>(y));
+            switch (cell) { 
+                case '1': { // Create player 1 tank
+                    auto tank = std::make_unique<Tank>(static_cast<int>(x), static_cast<int>(y), player1_tank_id++, 1, static_cast<int>(num_shells));
+                    Tank* tank_ptr = tank.get();
+                    player1_tanks.push_back(tank_ptr);
+                    object_at[pos] = tank_ptr;
+                    objects.push_back(std::move(tank));
+                    break;
+                }
+                case '2': { // Create player 2 tank
+                    auto tank = std::make_unique<Tank>(static_cast<int>(x), static_cast<int>(y), player2_tank_id++, 2, static_cast<int>(num_shells));
+                    Tank* tank_ptr = tank.get();
+                    player2_tanks.push_back(tank_ptr);
+                    object_at[pos] = tank_ptr;
+                    objects.push_back(std::move(tank));
+                    break;
+                }
+                case '#': { // Create wall 
+                    auto wall = std::make_unique<Wall>(static_cast<int>(x), static_cast<int>(y));
+                    Wall* wall_ptr = wall.get();
+                    object_at[pos] = wall_ptr;
+                    objects.push_back(std::move(wall));
+                    break;
+                }
+                case '@': { // Create mine
+                    auto mine = std::make_unique<Mine>(static_cast<int>(x), static_cast<int>(y));
+                    Mine* mine_ptr = mine.get();
+                    object_at[pos] = mine_ptr;
+                    objects.push_back(std::move(mine));
+                    break;
+                }
+                case '*': { // Create shell
+                    auto shell = std::make_unique<Shell>(Point(static_cast<int>(x), static_cast<int>(y)), Direction::U, 0);
+                    Shell* shell_ptr = shell.get();
+                    object_at[pos] = shell_ptr;
+                    objects.push_back(std::move(shell));
+                    break;
+                }
+                case ' ':
+                default: // Empty space - do nothing
+                    break;
+            }
+        }
+    }
+}
 
 // Getters
 int GameBoard::getCols() const {
@@ -34,7 +83,7 @@ int GameBoard::getRows() const {
 }
 
 int GameBoard::getMaxSteps() const {
-     return maxSteps;
+     return max_steps;
 }
 
 GameObject* GameBoard::getObjectAt(Point p) const {
@@ -269,5 +318,3 @@ void GameBoard::updateAllObjectsMap() {
         }
     }
 }
-
-

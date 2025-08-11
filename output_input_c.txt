@@ -1,4 +1,0 @@
-GetBattleInfo, GetBattleInfo
-RotateLeft90, RotateLeft90
-Shoot (killed), Shoot (killed)
-Tie, both players have zero tanks

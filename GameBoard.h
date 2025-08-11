@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
+#include <cstddef> // for size_t
+#include "common/SatelliteView.h"
 #include "Point.h"
 #include "GameObject.h"
 #include "Tank.h"
@@ -17,26 +19,23 @@ class GameBoard {
 private:
     int rows;  ///< Number of rows on the board
     int cols;  ///< Number of columns on the board
-    int maxSteps; ///< Maximum number of steps in the game
+    int max_steps; ///< Maximum number of steps in the game
     std::vector<std::unique_ptr<GameObject>> objects; ///< All game objects owned by the board
     std::unordered_map<Point, GameObject*> object_at; ///< Maps positions to game objects
     std::vector<Tank*> player1_tanks; ///< Pointers to player 1's tanks
     std::vector<Tank*> player2_tanks; ///< Pointers to player 2's tanks
 
 public:
+    GameBoard() = default; // Default constructor
     /**
      * @brief Constructs a GameBoard with the given parameters.
-     * @param rows Number of rows.
-     * @param cols Number of columns.
-     * @param maxSteps Maximum number of steps in the game.
-     * @param all_objects All game objects (ownership transferred).
-     * @param map Mapping from board positions to game objects.
-     * @param p1 Vector of pointers to player 1's tanks.
-     * @param p2 Vector of pointers to player 2's tanks.
+     * @param map_width Width of the game board.
+     * @param map_height Height of the game board.
+     * @param map Satellite view of the game board.
+     * @param max_steps Maximum number of steps in the game.
+     * @param num_shells Number of shells available to each player.
      */
-    GameBoard(int rows, int cols, int maxSteps,
-          std::vector<std::unique_ptr<GameObject>>&& all_objects, std::unordered_map<Point, GameObject*>&& map,
-          std::vector<Tank*>& p1, std::vector<Tank*>& p2);
+    GameBoard(size_t map_width, size_t map_height, const SatelliteView& map, size_t max_steps, size_t num_shells);
 
     // Rule of 5
     GameBoard(const GameBoard&) = delete; // Copy constructor deleted

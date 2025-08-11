@@ -4,8 +4,9 @@
 #include <iostream> // Include iostream for debug output
 
 // Constructor: initializes the satellite view with a reference to the board and the player's tank
-GameBoardSatelliteView::GameBoardSatelliteView(const GameBoard& board, const Tank* selfTank)
+GameBoardSatelliteView::GameBoardSatelliteView(const GameBoard board, const Tank* selfTank)
     : board(board), selfTank(selfTank) {}
+
 
 // Returns a character representing the object at (x, y)
 char GameBoardSatelliteView::getObjectAt(size_t x, size_t y) const { 

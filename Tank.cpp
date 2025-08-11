@@ -88,8 +88,8 @@ void Tank::IncreaseBackwardSteps() {
 }
 
 void Tank::cooldownModify() {
-    // Decreases the shooting cooldown if it's greater than 0 and less than 6
-    if (this->shooting_cooldown < 6 && this->shooting_cooldown > 0) {
+    // Decreases the shooting cooldown if it's greater than 0 and less than 5
+    if (this->shooting_cooldown < 5 && this->shooting_cooldown > 0) {
         this->shooting_cooldown--;
     } 
 }

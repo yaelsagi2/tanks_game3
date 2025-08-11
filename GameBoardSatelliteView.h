@@ -1,6 +1,8 @@
 #include "common/SatelliteView.h"
 #include "GameBoard.h"
+#include "MapData.h"
 #include "Tank.h"
+#include <vector>
 
 /**
  * @brief Provides a satellite view of the game board for a specific tank.
@@ -13,7 +15,10 @@ public:
      * @param board Reference to the game board.
      * @param selfTank Pointer to the player's own tank.
      */
-    GameBoardSatelliteView(const GameBoard& board, const Tank* selfTank);
+    GameBoardSatelliteView(const GameBoard board, const Tank* selfTank);
+
+    GameBoardSatelliteView(const MapData* map);
+
 
     /**
      * @brief Returns a character representing the object at the specified coordinates.
@@ -38,4 +43,8 @@ public:
 private:
     const GameBoard& board;   ///< Reference to the game board
     const Tank* selfTank;     ///< Pointer to the player's own tank
+
+    //for initialization for GameManager
+    std::vector<std::vector<char>> map_view; ///< 2D vector to hold the view of the board
+
 };
